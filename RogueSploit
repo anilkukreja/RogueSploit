@@ -855,6 +855,33 @@ function checktools {
 	fi
 	sleep 0.5
 
+  echo -ne $white"Checking Zenity....."$transparent
+	if ! hash zenity 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
+
+  echo -ne $white"Checking MITMf....."$transparent
+	if ! hash mitmf 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
+	
+  echo -ne $white"Checking SEToolkit....."$transparent
+	if ! hash setoolkit 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
+
 }
 #Welcome Screen
 welcome () {
