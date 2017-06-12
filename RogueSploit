@@ -15,15 +15,15 @@
 # - Add Hamster & Ferret-NG Sidejack tools                                                                   #
 ##############################################################################################################
 #colors
-cyan='\e[0;36m'
-green='\e[0;34m'
-okegreen='\033[92m'
-lightgreen='\e[1;32m'
-white='\e[1;37m'
-red='\e[1;31m'
-yellow='\e[1;33m'
-blue='\e[1;34m'
-transparent='\e[0m'
+cyan="\e[0;36m"
+green="\e[0;34m"
+okegreen="\033[92m"
+lightgreen="\e[1;32m"
+white="\e[1;37m"
+red="\e[1;31m"
+yellow="\e[1;33m"
+blue="\e[1;34m"
+transparent="\e[0m"
 
 #DEBUG ONLY FOR LOGGIN, BREAK CTRL_C TRAP!!!#
 #ENABLE IF YOU GET ERRORS; DO THE SAME FOR BEEFSTARTER SCRIPT AND OTHERS SCRIPTS TOO (not the .rc)
@@ -39,8 +39,8 @@ transparent='\e[0m'
 #Correct Mitmf installation
 mitmf_install () {
 	echo -ne $blue"["$yellow"?"$blue"] "$yellow"Do you want to correctly install MITMF? (y/n)"$blue"["$yellow"*"$blue"]";
-	echo -ne $yellow"mitmf"$white"@"$red"install"$white"; read mitans
-	if [ $mitans != 'n' ] || [ $mitans != 'N' ] || [ $mitans != 'No' ]
+	echo -ne $yellow"mitmf"$white"@"$red"install"$white"\n"; read mitans
+	if [ $mitans != "n" ] OR [ $mitans != "N" ] OR [ $mitans != "No" ]
 		then
     mitmfconf = "/root/MITMf/config/mitmf.conf"
 		apt-get remove mitmf
@@ -48,7 +48,7 @@ mitmf_install () {
 		cd $HOME && git clone https://github.com/byt3bl33d3r/MITMf
 		cd $HOME/MITMf && git submodule init && git submodule update --recursive
 		cd $HOME/MITMf && pip install -r requirements.txt
-		cat << "EOF" > /usr/bin/mitmf
+		cat << "EOF" > /usr/bin/mitmfù
 #!/bin/bash
 cd $HOME/MITMf/ && sudo python mitmf.py "$@"
 EOF
@@ -260,7 +260,7 @@ beef:
 EOF
 		sleep 0.6
 		echo -e $red"["$yellow"!"$red"]"$yellow" Resetting MITMF's configuration! "$red"["$yellow"!"$red"]"
-		cat << "EOF" > /etc/mitmf/mitmf.conf
+		cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
 
@@ -1125,7 +1125,7 @@ beef:
 EOF
 	sleep 0.6
 	echo -e $blue"["$yellow"*"$blue"]"$white" Changing MITMF's configuration for RogueSploit! "$blue"["$yellow"*"$blue"]"
-	cp /etc/mitmf/mitmf.conf /etc/mitmf/mitmf.conf.reset
+	cp mitmfconf mitmfconf+".reset"
 	cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
@@ -2000,7 +2000,7 @@ beef:
 EOF
 	sleep 0.6
 	echo -e $red"["$yellow"!"$red"]"$yellow" Resetting MITMF's configuration! "$red"["$yellow"!"$red"]"
-	cat << "EOF" > /etc/mitmf/mitmf.conf
+	cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
 
@@ -2806,7 +2806,7 @@ beef:
 EOF
 		sleep 0.6
 		echo -e $red"["$yellow"!"$red"]"$yellow" Resetting MITMF's configuration! "$red"["$yellow"!"$red"]"
-		cat << "EOF" > /etc/mitmf/mitmf.conf
+		cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
 
@@ -3613,7 +3613,7 @@ beef:
 EOF
 	sleep 0.6
 	echo -e $red"["$yellow"!"$red"]"$yellow" Resetting MITMF's configuration! "$red"["$yellow"!"$red"]"
-	cat << "EOF" > /etc/mitmf/mitmf.conf
+	cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
 
@@ -4418,7 +4418,7 @@ beef:
 EOF
 		sleep 0.6
 		echo -e $red"["$yellow"!"$red"]"$yellow" Resetting MITMF's configuration! "$red"["$yellow"!"$red"]"
-		cat << "EOF" > /etc/mitmf/mitmf.conf
+		cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
 
