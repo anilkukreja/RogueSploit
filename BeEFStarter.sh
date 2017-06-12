@@ -1,3 +1,4 @@
+Copyright (c) @2016-2017 H0nus
 #!/bin/bash
 DATE=$(date)
 echo $DATE
