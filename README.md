@@ -13,7 +13,7 @@ RogueSploit is an open source automated script made to create a Fake Acces Point
 - Add Hostapd as fake ap;
 - Add some features;
 
-#ONLY FOR LEGAL / AUTHORIZED / STUDY PURPOSES
+<h3>ONLY FOR LEGAL / AUTHORIZED / STUDY PURPOSES</h3>
 
 ***
 
