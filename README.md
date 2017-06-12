@@ -1,7 +1,8 @@
 #RogueSploit, A Powerfull WiFi Social Trap
-.. image:: https://img.shields.io/badge/Release-Stable-green.svg
+<img src="https://img.shields.io/badge/Release-Stable-green.svg">
 
-.. image:: https://img.shields.io/badge/Version-0.4-red.svg
+<img src="https://img.shields.io/badge/Version-0.4-red.svg">
+</br>
 <h2>FOR A CORRECT USE, PLEASE INSTALL INTO /root/ DIR!!</h2>
 
 RogueSploit is an open source automated script made to create a Fake Acces Point, with dhcpd server, dns spoofing, host redirection, browser_autopwn1 or autopwn2 or beef+mitmf.</hr>
