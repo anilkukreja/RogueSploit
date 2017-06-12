@@ -1,7 +1,7 @@
 #!/bin/bash
 ##############################################################################################################
 #                                       FAKE AP W/ TRAPS                                                     #
-#                                        by _B4ckp0r7                                                        #
+#                                        by H0nus                                                        #
 # This is a simple script for creating a fake access point with                                              #
 # dhcpd configuration, dns redirections, sniffing and browser_autopwn1 and 2 too                             #
 # [!] To do list [!]                                                                                         #
@@ -89,7 +89,7 @@ cat << "EOF" > /usr/share/beef-xss/config.yaml
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# BeEF Configuration file changed for RogueSploit by _B4ckP0r7
+# BeEF Configuration file changed for RogueSploit by Honus7
 
 beef:
     version: '0.4.7.0-alpha'
@@ -935,7 +935,7 @@ beefinject () {
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# BeEF Configuration file changed for RogueSploit by _B4ckP0r7
+# BeEF Configuration file changed for RogueSploit by H0nus
 
 beef:
     version: '0.4.7.0-alpha'
@@ -1784,7 +1784,7 @@ minimenu () {
 
 #menu1
 menu () {
-echo -e $yellow"--<"$blue"[*]"$yellow" Welcome $myname, this is Roguesploit v0.5 -- by _B4ckp0r7 "$blue"[*]"$yellow">--"
+echo -e $yellow"--<"$blue"[*]"$yellow" Welcome $myname, this is Roguesploit v0.6 -- by H0nus "$blue"[*]"$yellow">--"
 echo -e $lightgreen"--<[?] What do you want to do? [?]>-- ";
 echo -e $lightgreen"       1. Start RogueAP"
 echo -e $lightgreen"       2. Start Pwning Services"
@@ -1829,7 +1829,7 @@ elif test $answer1 == '2'
 elif test $answer1 == '3'
 	then
 	clear
-	echo -e "Made by B4ckP0r7 with love, Italian Engeering"
+	echo -e "Made by H0nus with love, Italian Engeering"
 	echo -e $blue"   Big thanks to:"
 	echo -e $lightgreen"--<[ $myname, a fantastic user! ]>--"
 	echo -e $red"--<[ My friends ]>--"
@@ -1856,7 +1856,7 @@ elif test $answer1 == '4'
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# BeEF Configuration file changed for RogueSploit by _B4ckP0r7
+# BeEF Configuration file changed for RogueSploit by H0nus
 
 beef:
     version: '0.4.7.0-alpha'
@@ -2578,7 +2578,7 @@ elif test $answer1 == '5'
 	echo -e $yellow" 2) START THE SCRIPT AND SELECT ROGUE AP (Option 1) ON FIRST TERMINAL;"
 	echo -e $yellow" 3) IN THE SECOND TERMINAL SELECT PWNING SERVICES (Option 2)"
 	echo -e $yellow" 4) THEN JUST WAIT FOR SOMEONE CONNECTING TO YOURE AP AND THEY WILL BE REDIRECTED TO YOUR LOCAL TRAP!"
-	echo -e $yellow" 5) Did you understand $myname ?If any problems, or strange things appens, just go here --> https://github.com/B4ckP0r7/RogueSploit/issues and open a new issue!"
+	echo -e $yellow" 5) Did you understand $myname ?If any problems, or strange things appens, just go here --> https://github.com/H0nus/RogueSploit/issues and open a new issue!"
 	echo -ne $yellow"Press any key to continue..."
 	read continuos
 	menu
@@ -2593,42 +2593,42 @@ elif test $answer1 == '6'
 		mkdir $HOME/RogueBackup
 		cp $0 $HOME/RogueBackup/RogueSploitOld.backup
 		echo -e $blue"[*]"$yellow"Updating RogueSploit script"$blue"[*]"
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/RogueSploit" -s -o $0
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/RogueSploit" -s -o $0
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating roguepwn1.rc file"$blue"[*]"
 		cp roguepwn1.rc $HOME/RogueBackup/roguepwn1.rc.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/roguepwn1.rc" -s -o $PWD/roguepwn1.rc
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/roguepwn1.rc" -s -o $PWD/roguepwn1.rc
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating roguepwn2.rc file"$blue"[*]"
 		cp roguepwn2.rc $HOME/RogueBackup/roguepwn2.rc.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/roguepwn2.rc" -s -o $PWD/roguepwn2.rc
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/roguepwn2.rc" -s -o $PWD/roguepwn2.rc
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating roguepwn3.rc file"$blue"[*]"
 		cp roguepwn2.rc $HOME/RogueBackup/roguepwn3.rc.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/roguepwn3.rc" -s -o $PWD/roguepwn3.rc
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/roguepwn3.rc" -s -o $PWD/roguepwn3.rc
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating BeEFStarter.sh file"$blue"[*]"
 		cp BeEFStarter.sh $HOME/RogueBackup/BeEFStarter.sh.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/BeEFStarter.sh" -s -o $PWD/BeEFStarter.sh
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/BeEFStarter.sh" -s -o $PWD/BeEFStarter.sh
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating README file"$blue"[*]"
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/README.md" -s -o $PWD/README.md
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/README.md" -s -o $PWD/README.md
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin index file"$blue"[*]"
 		mkdir $PWD/weblogin
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/index.html" -s -o $PWD/weblogin/index.html
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/index.html" -s -o $PWD/weblogin/index.html
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin css file"$blue"[*]"
 		mkdir $PWD/weblogin/css
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/css/style.css" -s -o $PWD/weblogin/css/style.css
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/css/style.css" -s -o $PWD/weblogin/css/style.css
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin scss file"$blue"[*]"
 		mkdir $PWD/weblogin/scss
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/scss/style.scss" -s -o $PWD/weblogin/scss/style.scss
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/scss/style.scss" -s -o $PWD/weblogin/scss/style.scss
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin javascript file"$blue"[*]"
 		mkdir $PWD/weblogin/js
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/js/index.js" -s -o $PWD/weblogin/js/index.js
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/js/index.js" -s -o $PWD/weblogin/js/index.js
 		chmod +x $HOME/RogueSploit/* -R
 		echo -e $green" Updated successfully! Restarting the script to apply the changes ..."
 		sleep 3
@@ -2662,7 +2662,7 @@ else
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# BeEF Configuration file changed for RogueSploit by _B4ckP0r7
+# BeEF Configuration file changed for RogueSploit by H0nus
 
 beef:
     version: '0.4.7.0-alpha'
@@ -3397,7 +3397,7 @@ clear
 mitmf_install
 clear
 notify-send --urgency=critical RogueSploit "Please remember to update sometimes! (Just check to have an internet connection and use the option 6)"
-echo -e $yellow"--<"$blue"[*]"$yellow" Welcome $myname, this is Roguesploit v0.5 -- by _B4ckp0r7 "$blue"[*]"$yellow">--"
+echo -e $yellow"--<"$blue"[*]"$yellow" Welcome $myname, this is Roguesploit v0.6 -- by H0nus "$blue"[*]"$yellow">--"
 echo -e $lightgreen"--<[?] What do you want to do? [?]>-- ";
 echo -e $lightgreen"       1. Start RogueAP"
 echo -e $lightgreen"       2. Start Pwning Services"
@@ -3442,7 +3442,7 @@ elif test $answer1 == '2'
 elif test $answer1 == '3'
 	then
 	clear
-	echo -e "Made by B4ckP0r7 with love, Italian Engeering"
+	echo -e "Made by H0nus with love, Italian Engeering"
 	echo -e $blue"   Big thanks to:"
 	echo -e $lightgreen"--<[ $myname, a fantastic user! ]>--"
 	echo -e $red"--<[ My friends ]>--"
@@ -3469,7 +3469,7 @@ elif test $answer1 == '4'
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# BeEF Configuration file changed for RogueSploit by _B4ckP0r7
+# BeEF Configuration file changed for RogueSploit by H0nus
 
 beef:
     version: '0.4.7.0-alpha'
@@ -4191,7 +4191,7 @@ elif test $answer1 == '5'
 	echo -e $yellow" 2) START THE SCRIPT AND SELECT ROGUE AP (Option 1) ON FIRST TERMINAL;"
 	echo -e $yellow" 3) IN THE SECOND TERMINAL SELECT PWNING SERVICES (Option 2)"
 	echo -e $yellow" 4) THEN JUST WAIT FOR SOMEONE CONNECTING TO YOURE AP AND THEY WILL BE REDIRECTED TO YOUR LOCAL TRAP!"
-	echo -e $yellow" 5) Did you understand $myname ?If any problems, or strange things appens, just go here --> https://github.com/B4ckP0r7/RogueSploit/issues and open a new issue!"
+	echo -e $yellow" 5) Did you understand $myname ?If any problems, or strange things appens, just go here --> https://github.com/H0nus/RogueSploit/issues and open a new issue!"
 	echo -ne $yellow"Press any key to continue..."
 	read continuos
 	menu
@@ -4206,42 +4206,42 @@ elif test $answer1 == '6'
 		mkdir $HOME/RogueBackup
 		cp $0 $HOME/RogueBackup/RogueSploitOld.backup
 		echo -e $blue"[*]"$yellow"Updating RogueSploit script"$blue"[*]"
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/RogueSploit" -s -o $0
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/RogueSploit" -s -o $0
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating roguepwn1.rc file"$blue"[*]"
 		cp roguepwn1.rc $HOME/RogueBackup/roguepwn1.rc.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/roguepwn1.rc" -s -o $PWD/roguepwn1.rc
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/roguepwn1.rc" -s -o $PWD/roguepwn1.rc
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating roguepwn2.rc file"$blue"[*]"
 		cp roguepwn2.rc $HOME/RogueBackup/roguepwn2.rc.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/roguepwn2.rc" -s -o $PWD/roguepwn2.rc
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/roguepwn2.rc" -s -o $PWD/roguepwn2.rc
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating roguepwn3.rc file"$blue"[*]"
 		cp roguepwn2.rc $HOME/RogueBackup/roguepwn3.rc.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/roguepwn3.rc" -s -o $PWD/roguepwn3.rc
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/roguepwn3.rc" -s -o $PWD/roguepwn3.rc
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating BeEFStarter.sh file"$blue"[*]"
 		cp BeEFStarter.sh $HOME/RogueBackup/BeEFStarter.sh.backup
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/BeEFStarter.sh" -s -o $PWD/BeEFStarter.sh
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/BeEFStarter.sh" -s -o $PWD/BeEFStarter.sh
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating README file"$blue"[*]"
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/README.md" -s -o $PWD/README.md
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/README.md" -s -o $PWD/README.md
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin index file"$blue"[*]"
 		mkdir $PWD/weblogin
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/index.html" -s -o $PWD/weblogin/index.html
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/index.html" -s -o $PWD/weblogin/index.html
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin css file"$blue"[*]"
 		mkdir $PWD/weblogin/css
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/css/style.css" -s -o $PWD/weblogin/css/style.css
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/css/style.css" -s -o $PWD/weblogin/css/style.css
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin scss file"$blue"[*]"
 		mkdir $PWD/weblogin/scss
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/scss/style.scss" -s -o $PWD/weblogin/scss/style.scss
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/scss/style.scss" -s -o $PWD/weblogin/scss/style.scss
 		sleep 0.4
 		echo -e $blue"[*]"$yellow"Updating weblogin javascript file"$blue"[*]"
 		mkdir $PWD/weblogin/js
-		curl "https://raw.githubusercontent.com/B4ckP0r7/RogueSploit/master/weblogin/js/index.js" -s -o $PWD/weblogin/js/index.js
+		curl "https://raw.githubusercontent.com/H0nus/RogueSploit/master/weblogin/js/index.js" -s -o $PWD/weblogin/js/index.js
 		chmod +x $HOME/RogueSploit/* -R
 		echo -e $green" Updated successfully! Restarting the script to apply the changes ..."
 		sleep 3
@@ -4274,7 +4274,7 @@ else
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
-# BeEF Configuration file changed for RogueSploit by _B4ckP0r7
+# BeEF Configuration file changed for RogueSploit by H0nus
 
 beef:
     version: '0.4.7.0-alpha'
