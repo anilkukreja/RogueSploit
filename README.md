@@ -1,5 +1,6 @@
 <img src="http://i.imgur.com/I2DDLvd.png"><br>
-<img src="https://img.shields.io/badge/Dev-Alive-brightgreen.svg"> <img src="https://img.shields.io/badge/Version-0.4-red.svg">
+<img src="https://img.shields.io/badge/Dev-Alive-brightgreen.svg"> <img src="https://img.shields.io/badge/Version-0.6-red.svg">
+<img src="https://img.shields.io/github/issues/H0nus/RogueSploit.svg"> <img src="https://img.shields.io/github/stars/H0nus/RogueSploit.svg">
 </br>
 <h2>FOR A CORRECT USE, PLEASE INSTALL INTO /root/ DIR!!</h2>
 
